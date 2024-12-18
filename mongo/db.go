@@ -1,5 +1,4 @@
-// Connects to MongoDB and sets a Stable API version
-package main
+package mongoexample
 
 import (
 	"context"
@@ -11,7 +10,7 @@ import (
 // Replace the placeholder with your Atlas connection string
 const uri = "mongodb://localhost:27017"
 
-func main() {
+func Example_connect() (*mongo.Client, error) {
 	// Use the SetServerAPIOptions() method to set the Stable API version to 1
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
@@ -20,10 +19,5 @@ func main() {
 		log.Fatalln("got an error while connecting to MongoDB:", err)
 	}
 
-	defer func() {
-		if err := client.Disconnect(context.TODO()); err != nil {
-			panic(err)
-		}
-	}()
-
+	return client, err
 }
