@@ -9,20 +9,21 @@ import (
 )
 
 // Replace the placeholder with your Atlas connection string
-const uri = "<connection string>"
+const uri = "mongodb://localhost:27017"
 
 func main() {
-
 	// Use the SetServerAPIOptions() method to set the Stable API version to 1
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	log.Println("Connecting to MongoDB", serverAPI)
-
 	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
-	// Create a new client and connect to the server
 	client, err := mongo.Connect(context.TODO(), opts)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln("got an error while connecting to MongoDB:", err)
 	}
-	log.Println("client is ", client)
+
+	defer func() {
+		if err := client.Disconnect(context.TODO()); err != nil {
+			panic(err)
+		}
+	}()
 
 }
