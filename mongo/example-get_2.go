@@ -20,6 +20,7 @@ func Example_get_2(client *mongo.Client) ([]byte, error) {
 	}
 	if err != nil {
 		panic(err)
+
 	}
 	jsonData, err := json.MarshalIndent(result, "", "    ")
 	if err != nil {
